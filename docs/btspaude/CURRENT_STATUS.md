@@ -4,7 +4,7 @@
 
 ## Work completed
 
-The initial documentation system was created, updated after a read-only code trace, and committed as parent-repository commit `0e2d9bc`. It now lives under `~/CDet_replay/docs_bs`; the suffix distinguishes this documentation set from collaborators' work. No code, database, generated-file, branch, tag, or push change is authorized by this work.
+The initial documentation system was created, updated after a read-only code trace, and committed as parent-repository commit `0e2d9bc`. It now lives under `~/CDet_replay/docs/btspaude`; the user-specific subdirectory distinguishes this documentation set from collaborators' work. No code, database, generated-file, branch, tag, or push change is authorized by this work.
 
 ## Fresh Git observations before documentation edits
 

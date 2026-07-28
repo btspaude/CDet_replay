@@ -43,6 +43,14 @@ CDet timing arrays in replayed ROOT files are in 10 ps units. The macros use `TD
 
 The calibration macro contains bad/hot-channel suppression hooks, per-pixel/per-bar distributions, multiplicity checks, and hit-count storage for fitted bar offsets. The scientific criteria and approved bad-channel list still need documentation. Keep physical paddles, maPMT pixels, electronics channels, and logical IDs distinct; the macro's variable name `NumPaddles = 16` actually covers every maPMT pixel position.
 
+## Raw occupancy and singles rate
+
+The cross-target macro counts every raw leading-edge entry on physical CDet logical IDs 0–2687, including multiple entries from the same channel in one event. The raw occupancy is the mean hit count per processed event, not the fraction of events with at least one hit. The raw singles-rate estimate assumes a 60 ns observation window per processed event:
+
+`rate [Hz] = raw hit count / (processed events × 60 ns)`.
+
+Its Poisson statistical uncertainty is `sqrt(raw hit count) / observed time`. The corresponding occupancy uncertainty is `sqrt(hit count) / processed events`. The stored rate and uncertainty vectors remain in Hz; the ROOT rate histogram and four-panel layer/side display use kHz. Rate and occupancy displays use the same four-panel layer/side organization. Unused maPMT pixels remain at their logical channel positions but are omitted from the plotted `TGraphErrors`, producing gaps without renumbering the channel axis. This calculation does not apply TOT, ECal, reconstructed-good-hit, multiplicity, or bad-channel cuts. The rate remains conditional on any event-level selection enclosing the raw-hit loop; currently `good_elastic` is forced true.
+
 ## Coordinate and alignment checks
 
 State the coordinate system, sign convention, units, surveyed or assumed geometry, and comparison method. The current convention says the physically bottom channel corresponds to positive transport `x`.
