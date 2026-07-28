@@ -31,7 +31,9 @@ The current cross-target master macro implements stages 0–8:
 
 The in-session cross-target driver runs an iterative sequence `0 → 1 → 3 → 6`, then `1 → 3 → 6`, followed by stage 7 closure/final passes. The time-walk model in the macro is layer-dependent and proportional to `1/sqrt(TOT) - 1/sqrt(TOT_ref)`.
 
-The current cross-target and hydrogen macros explicitly use logical ID 2696 as an event reference and convert their TDC arrays with `TDC_calib_to_ns = 0.01`. This verifies what the macros do, not the hardware meaning or unit correctness. `VETROCcdet` comments describe its decoded raw time as picoseconds, while replay histogram titles say `10ps/ch`; resolve this before treating numerical timing constants as physical nanoseconds.
+The project leader confirms that the extra DAQ slot is mapped as 16 IDs but only logical ID 2696 is used, as the reference signal. Physical detector pixels are IDs 0–2687. The current cross-target and hydrogen macros correctly select ID 2696 as the event reference.
+
+CDet timing arrays in replayed ROOT files are in 10 ps units. The macros use `TDC_calib_to_ns = 0.01`, so `t [ns] = 0.01 × t [10 ps units]`. The exact upstream offline location that establishes this convention is not yet identified. Continue applying the existing conversion for current analysis; any later unit migration must explicitly address replay output, cuts, constants, plots, and compatibility with existing ROOT files.
 
 ## Gain/amplitude calibration, if applicable
 
@@ -58,7 +60,7 @@ Identify statistical uncertainty, model dependence, run dependence, channel-to-c
 - Is the current staged timing workflow the approved objective, and which cross-target/hydrogen runs are valid inputs?
 - Which master macro and driver are canonical given the multiple historical and specialized variants?
 - Is gain/amplitude calibration in scope?
-- Does slot 20 channel 40 / logical ID 2696 carry the authoritative reference signal, and why are all 16 slot-20 channels ordinary detector elements in the database?
-- How should the 2704-versus-2720 discrepancy be interpreted?
-- What is the correct end-to-end TDC unit and conversion to ns?
+- Where in the offline processing is the 10 ps ROOT-output unit established?
+- If the timing representation is changed later, what migration and compatibility plan will prevent mixing old and new ROOT files or constants?
+- Should the mostly unused extra-slot IDs eventually be represented differently in the database/software?
 - What validation criteria and uncertainty budget are required?

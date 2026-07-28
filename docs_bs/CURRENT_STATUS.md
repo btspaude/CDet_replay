@@ -1,10 +1,10 @@
 # Current status
 
-**As of:** 2026-07-27
+**As of:** 2026-07-28
 
 ## Work completed
 
-The initial documentation system under `~/CDet_replay/docs` has been created and updated after a read-only trace through the CDet implementations in SBS-offline and SBS-replay. This work authorized documentation only; it did not authorize code, database, generated-file, branch, tag, or push changes. A documentation commit still requires workflow approval.
+The initial documentation system was created, updated after a read-only code trace, and committed as parent-repository commit `0e2d9bc`. It now lives under `~/CDet_replay/docs_bs`; the suffix distinguishes this documentation set from collaborators' work. No code, database, generated-file, branch, tag, or push change is authorized by this work.
 
 ## Fresh Git observations before documentation edits
 
@@ -24,13 +24,15 @@ These are observations, not changes made by this documentation task. Treat all p
 - Its `nchan = 2720` line is commented out.
 - `SBSGenericDetector` constructs 2704 ordinary elements from the current database. The channel map does not use its `-1000` special-reference marker.
 - Current cross-target and hydrogen calibration macros explicitly select logical ID 2696 as the event reference. By database order this is crate 63, slot 20, channel 40.
+- The project leader confirms that physical detector pixels are IDs 0–2687. The extra DAQ slot maps 16 further IDs to make the correct total of 2704, but only ID 2696 is used, as the reference signal; the other 15 are not physical detector channels.
+- CDet timing values in replayed ROOT files are in 10 ps units. Current analysis converts them to ns with a factor of `0.01`.
 - The active code path is VETROC decoding → generic channel/geometry mapping → `SBSCDet` position-aware LE/TE/TOT hits → replay tree/monitoring output.
 - The current calibration macro implements staged bar-offset, ECal-timing, and layer-dependent TOT time-walk corrections; CDet ADC processing is disabled in `SBSCDet` by default.
 
-## Recollection and unresolved questions
+## Confirmed conventions and unresolved questions
 
-Use of ID 2696 is now verified in current calibration code, but its authoritative hardware/physics role is not. The meaning of all 16 final mapped channels, the 2704-versus-2720 discrepancy, the physical-to-logical mapping, and the end-to-end TDC units remain unresolved. The project leader must still confirm the calibration objective, canonical macro/driver, approved run set, validation criteria, and uncertainty requirements.
+The 2704 mapped total, physical range 0–2687, reference ID 2696, and 10 ps ROOT timing unit are confirmed project conventions. The historical commented 2720 value has no active role. Still unresolved are the upstream location that establishes the timing unit, the full physical-to-logical mapping, and a safe plan for any eventual timing-unit migration. The project leader must also confirm the calibration objective, canonical macro/driver, approved run set, validation criteria, and uncertainty requirements.
 
 ## Recommended next steps
 
-With project-leader direction, confirm whether the discovered staged workflow and run lists are current; reconcile TDC units; verify slot 20 channel purposes from DAQ records; audit the macro's inconsistent 2692/2704 count constants; and document the physical-to-logical mapping from evidence. Obtain approval before implementing any resulting major change.
+With project-leader direction, confirm whether the discovered staged workflow and run lists are current; locate the upstream timing-unit conversion; audit the macro's inconsistent 2692/2704 count constants; and document the physical-to-logical mapping from evidence. Before changing timing units, design and approve a compatibility plan for replay output, analysis cuts, calibration constants, and existing ROOT files.

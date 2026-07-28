@@ -7,7 +7,7 @@ Use one entry per decision with **Date**, **Status**, **Context**, **Decision**,
 - **Date:** 2026-07-27
 - **Status:** Accepted
 - **Context:** The project needs a durable return-to-work point.
-- **Decision:** Documentation lives in `~/CDet_replay/docs`. Use dated logs plus a concise current-status page.
+- **Decision:** Documentation lives in `~/CDet_replay/docs_bs`. Use dated logs plus a concise current-status page. The `_bs` suffix distinguishes this documentation set from collaborators' work and reduces naming conflicts.
 - **Consequences:** New tasks should read `CURRENT_STATUS.md` and the newest log first; durable changes should update the appropriate focused document.
 
 ## Generated calibration products

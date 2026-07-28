@@ -12,6 +12,8 @@ Start with [CURRENT_STATUS.md](CURRENT_STATUS.md) and the newest file in [logs/]
 - [TODO.md](TODO.md): possible next investigations; entries are not authorization to implement them.
 - [validation/](validation/): guidance for future validation summaries and curated artifacts.
 
+Thesis physics plots are documented separately under `~/Desktop/thesis_plots/docs/`, which is the authoritative location for their scientific purpose, provenance, validation, reproduction instructions, and captions. A new or materially changed physics plot is incomplete until its plot-family documentation is updated there. Generated plots remain outside Git unless the project leader explicitly approves tracking them.
+
 For a new ChatGPT or Codex task, read the status and newest log first, then the working agreement and the documents relevant to the task. Inspect current Git state, applicable repository guidance, and the affected source/database files before proposing changes.
 
 Source code and database files are authoritative when they disagree with this documentation. Record disagreements rather than silently resolving them.

@@ -31,11 +31,11 @@ The following were verified directly on 2026-07-27 in `git-repo/sbs_devel/SBS-re
 - `earm.cdet.nlayers = 1`; the database's four rows encode the two physical layers and two sides for purposes of `SBSGenericDetector`. This software grid is not the same hierarchy as the physical two-layer detector.
 - Logical ID 2696 corresponds by explicit map order to crate 63, slot 20, channel 40.
 
-These observations describe file contents, not the purpose of the final 16 channels or a complete physical-to-logical mapping.
+The project leader confirms that 2704 is the correct mapped total. IDs 0–2687 are the physical detector pixels. The extra DAQ slot contributes 16 mapped IDs, but only ID 2696 is used, as the reference signal; the other 15 are not physical CDet channels. The commented 2720 value is therefore not an active channel count.
 
 ## Implemented software interpretation
 
-`SBSGenericDetector::ReadDatabase` computes its element count as the sum of `ncols[row] × nlayers`, then requires the detector-map and channel-map counts to match. With this database it therefore constructs 2704 elements. Its special reference-channel convention is a channel-map value of `-1000`; the current CDet channel map contains ordinary logical IDs 2688–2703 instead, and the detector-map reference fields are `-1`. Consequently, the generic detector does **not** classify the final 16 as its special reference elements.
+`SBSGenericDetector::ReadDatabase` computes its element count as the sum of `ncols[row] × nlayers`, then requires the detector-map and channel-map counts to match. With this database it therefore constructs 2704 elements. Its special reference-channel convention is a channel-map value of `-1000`; the current CDet channel map contains ordinary logical IDs 2688–2703 instead, and the detector-map reference fields are `-1`. Consequently, the generic detector represents the extra slot as ordinary elements even though the CDet analysis uses ID 2696 as its reference.
 
 `SBSCDet` operates in TDC mode with leading and trailing edges and no ADC by default. It delegates decoding and good-hit choice to `SBSGenericDetector`, then retains hits inside hard-coded leading-edge and TOT windows of 100–10000 in the detector's processed units. It copies logical element ID, software row/column/layer, database position, leading edge, trailing edge, and TOT into `earm.cdet.hit.*`. `FineProcess` currently performs no clustering or track matching.
 
@@ -43,8 +43,15 @@ The current cross-target calibration macro treats IDs 0–2687 as 168 groups of 
 
 ## Unresolved points
 
-- Why does the commented value 2720 differ from the mapped/grid total of 2704? The active meaning of 2720 remains unresolved.
-- What is the authoritative hardware/physics role of logical IDs 2688–2703? The current database and generic detector represent them as normal elements even though calibration code uses one as a reference.
-- Reference signal ID 2696 is **verified as current calibration-macro behavior**: the cross-target and hydrogen master macros explicitly select it from raw and reconstructed hits. Its identification as the intended authoritative DAQ reference remains to be confirmed from DAQ configuration or a calibration note.
+- Why the historical commented value 2720 remains in the database is unknown, but it is not an active mapping question: 2704 is the confirmed mapped total.
+- The software representation of the mostly unused extra slot may eventually be cleaned up, but its present purpose is known: ID 2696 is the reference and the other 15 IDs are not physical detector channels.
 - What is the verified mapping among physical paddles, bars, maPMT pixels, electronics channels, and database logical IDs?
-- Are TDC values passed to analysis in picoseconds, 10 ps units, or another calibrated unit? Decoder comments, replay histogram labels, and the calibration macro's `0.01` conversion should be reconciled.
+- Where in the upstream offline processing is the established ROOT-output convention of 10 ps per stored CDet timing unit applied?
+
+## Timing-unit convention
+
+The project leader confirms that CDet timing quantities in replayed ROOT files are stored in units of 10 ps. The `PlotElastic*.C` calibration macros multiply these values by `0.01` to express them in ns:
+
+`t [ns] = 0.01 × t [10 ps units]`.
+
+The exact upstream conversion point has not yet been located and may be in general SBS processing rather than a CDet-specific class. The present convention is accepted for ongoing analysis. A future change must be treated as a coordinated calibration/interface change so that replay output, cuts, calibration constants, plots, and historical ROOT files are not silently mixed.
