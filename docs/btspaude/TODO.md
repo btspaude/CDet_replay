@@ -4,16 +4,19 @@ Items below are investigations or proposals, not authorization to implement chan
 
 ## Immediate
 
-- Obtain the project leader's current calibration objective, required outputs, acceptance criteria, and run set.
-- Select the canonical master macro and driver from the current cross-target, hydrogen, and historical variants.
-- Record the code and database revisions relevant to the selected runs.
+- Pull `origin/tdccalib` on ifarm and inspect the new selected-bar paired-hit LE spectra and x-versus-z trajectory plots on real data.
+- Record the logical pixel ID with the approximately 10 ns double peak and add an explicit temporary calibration exclusion only after confirming the intended mechanism.
+- Regenerate a fresh `CDet_calibration_dt.dat` from stage 1 plus `extractAllCDetPixelTimingOffsets(true)`, then run stage 2/closure checks and review fit-status coverage.
+- Record the exact run set and code/database revisions used for the regenerated constants.
 
 ## Calibration
 
-- Establish timing observables, reference definition, cuts, units, fit/extraction method, and validation criteria.
+- Establish final timing cuts and validation criteria; the implemented centroid is now the local `gaus+pol1` signal-fit mean and the background-subtracted fit is visual only.
+- Study how to identify and cut crosstalk hits, then determine whether the currently excluded double-peaked pixel can be recovered without bias.
 - Decide whether gain/amplitude calibration is applicable and in scope.
 - Define channel-quality criteria and uncertainty/systematic studies.
 - Define coordinate/alignment checks using an explicit coordinate convention.
+- Record the sign and simulation provenance of the 13.3 cm ECal effective-z shift, and decide whether each projection should use the surveyed 6 m position or the simulation-derived effective position.
 
 ## Detector/database verification
 

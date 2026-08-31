@@ -33,3 +33,11 @@ Use one entry per decision with **Date**, **Status**, **Context**, **Decision**,
 - **Context:** Detector and calibration conventions affect physics interpretation and software compatibility.
 - **Decision:** Major detector, calibration, or architecture changes require project-leader approval before implementation.
 - **Consequences:** Coordinate/numbering, calibration definitions, event selection, physics logic, interfaces/formats, substantial analysis routines, and architecture changes must first be presented with evidence, risks, and alternatives.
+
+## CDet delta-t calibration centroid
+
+- **Date:** 2026-08-30
+- **Status:** Accepted
+- **Context:** The background-subtracted distribution is useful for visualizing the delta-t peak, but its fitted mean should not define the physical pixel correction.
+- **Decision:** Use the Gaussian mean and uncertainty from the local `gaus(0)+pol1(3)` fit over the actual delta-t signal region for each pixel. Form bar and detector reference centroids with inverse-variance weights from those signal fits. Treat the broad background subtraction and clean-Gaussian fit as diagnostics only.
+- **Consequences:** Both the one-bar and all-detector extractors use the signal-fit centroid. A failed secondary background diagnostic does not reject an otherwise valid signal fit. Calibration files must be regenerated and closure-tested before the new constants are accepted.
